@@ -89,14 +89,15 @@ async function handler(request) {
       const body = await request.json();
       const cityID = body.id;
 
-      if(!cityID){
+      if (!cityID) {
         return new Response("Id saknas!", {
           status: 400,
-          headers: headersCORS
-        })
+          headers: headersCORS,
+        });
       }
-      for(let city of cities){
-        if()
+      for (let city of cities) {
+        if (city.id) {
+        }
       }
     }
   }
