@@ -87,18 +87,21 @@ async function handler(request) {
   if (request.method == "DELETE") {
     if (url.pathname == "/cities") {
       const body = await request.json();
-      const city = body;
+      const city = body.id;
+      console.log("förfråganserve: " + city);
 
-      if (!city.id) {
+      if (!city) {
         return new Response("Id saknas!", {
           status: 400,
           headers: headersCORS,
         });
       }
-      for (let i = 0; i < cities; i++) {
-        if (stad.id == city.id) {
-          index = i;
-          cities.splice(index, 1);
+      for (let i = 0; i < cities.length; i++) {
+        console.log(cities[i].id);
+
+        if (cities[i].id == city) {
+          console.log("server: " + cities[i].id);
+          cities.splice(i, 1);
 
           return new Response("Delete ok", {
             status: 200,

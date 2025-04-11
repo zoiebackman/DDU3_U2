@@ -39,17 +39,20 @@ function fulfillhandleGET(resource) {
     citys.appendChild(cityText);
     citys.appendChild(cityDelete);
 
-    const buttonDel = document.querySelectorAll(".cityDelete");
-    buttonDel.addEventListener("click", function () {
+    cityDelete.addEventListener("click", function () {
+      console.log(city.id);
+
       fetch("http://localhost:8000/cities", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(city.id),
+        body: JSON.stringify({ id: city.id }),
       })
         .then((x) => x.json())
-        .then(fulfillhandleDELETE);
+        .then(citys.remove());
 
-      function fulfillhandleDELETE(resource) {}
+      /* function fulfillhandleDELETE(){
+      citys.remove()
+      } */
     });
   }
 }
