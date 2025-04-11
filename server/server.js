@@ -74,8 +74,9 @@ async function handler(request) {
         name: inputName,
         country: inputCountry,
       };
-      console.log(`Detta är POST/cities: ${newCity}`);
+      console.log(`Detta är POST/cities: ${newCity.id}`);
       cities.push(newCity);
+      console.log("UPPDATERAD ARRAY: " + cities);
 
       return new Response(JSON.stringify(newCity), {
         status: 200,

@@ -4,11 +4,7 @@ const button1 = document.getElementById("button1");
 const inputText = document.getElementById("inputText");
 const inputCountry2 = document.getElementById("inputCountry2");
 
-const get = { method: "GET" };
-const post = { method: "POST" };
-const del = { method: "DELETE" };
-
-const requestGET = new Request("http://localhost:8000/cities", get);
+const requestGET = new Request("http://localhost:8000/cities");
 
 fetch(requestGET)
   .then((x) => {
@@ -91,5 +87,17 @@ button1.addEventListener("click", function () {
     document.getElementById("cities").appendChild(citys);
     citys.appendChild(cityText);
     citys.appendChild(cityDelete);
+
+    cityDelete.addEventListener("click", function () {
+      console.log(city.id);
+
+      fetch("http://localhost:8000/cities", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: city.id }),
+      })
+        .then((x) => x.json())
+        .then(citys.remove());
+    });
   }
 });
