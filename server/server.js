@@ -87,18 +87,30 @@ async function handler(request) {
   if (request.method == "DELETE") {
     if (url.pathname == "/cities") {
       const body = await request.json();
-      const cityID = body.id;
+      const city = body;
 
-      if (!cityID) {
+      if (!city.id) {
         return new Response("Id saknas!", {
           status: 400,
           headers: headersCORS,
         });
       }
-      for (let city of cities) {
-        if (city.id) {
+      for (let i = 0; i < cities; i++) {
+        if (stad.id == city.id) {
+          index = i;
+          cities.splice(index, 1);
+
+          return new Response("Delete ok", {
+            status: 200,
+            headers: headersCORS,
+          });
         }
       }
+
+      return new Response("Finns ingen stad med id", {
+        status: 404,
+        headers: headersCORS,
+      });
     }
   }
 

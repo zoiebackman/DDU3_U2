@@ -38,10 +38,21 @@ function fulfillhandleGET(resource) {
     document.getElementById("cities").appendChild(citys);
     citys.appendChild(cityText);
     citys.appendChild(cityDelete);
+
+    const buttonDel = document.querySelectorAll(".cityDelete");
+    buttonDel.addEventListener("click", function () {
+      fetch("http://localhost:8000/cities", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(city.id),
+      })
+        .then((x) => x.json())
+        .then(fulfillhandleDELETE);
+
+      function fulfillhandleDELETE(resource) {}
+    });
   }
 }
-
-const requestPOST = new Request("http://localhost:8000/cities");
 
 button1.addEventListener("click", function () {
   const inputName = document.getElementById("inputName");
