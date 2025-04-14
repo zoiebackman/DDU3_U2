@@ -48,7 +48,7 @@ async function handler(request) {
 
       for (let city of cities) {
         if (cityMatch == city.id) {
-          return new Response(city, {
+          return new Response(JSON.stringify(city), {
             status: 200,
             headers: headersCORS,
           });
@@ -59,6 +59,37 @@ async function handler(request) {
         status: 404,
         headers: headersCORS,
       });
+    }
+
+    if (url.pathname == "cities/search") {
+      if (url.searchParams.has("text")) {
+        const textValue = url.searchParams.get("text");
+        let rightCities = [];
+        for (let city of cities) {
+          if (city.name.includes(textValue)) {
+            rightCities.push(city);
+          }
+        }
+
+        if (url.searchParams.has("country")) {
+          const countryValue = url.searchParams.get("country");
+          for (let i = 0; i < rightCities.length; i++) {
+            if (!rightCities[i].country.includes(countryValue)) {
+              rightCities.splice(i, 1);
+            }
+          }
+        }
+
+        return new Response(JSON.stringify(rightCities), {
+          status: 200,
+          headers: headersCORS,
+        });
+      } else {
+        return new Response("Sökparametern text finns ej med!", {
+          status: 400,
+          headers: headersCORS,
+        });
+      }
     }
   }
 
