@@ -40,6 +40,26 @@ async function handler(request) {
         headers: headersCORS,
       });
     }
+    const route = new URLPattern({ pathname: "cities/:id" });
+    const match = route.exec(url);
+
+    if (match) {
+      const cityMatch = match.pathname.groups.id;
+
+      for (let city of cities) {
+        if (cityMatch == city.id) {
+          return new Response(city, {
+            status: 200,
+            headers: headersCORS,
+          });
+        }
+      }
+    } else {
+      return new Response("Finns ingen stad med detta id", {
+        status: 404,
+        headers: headersCORS,
+      });
+    }
   }
 
   if (request.method == "POST") {
@@ -124,20 +144,3 @@ async function handler(request) {
   });
 }
 Deno.serve(handler);
-
-/*   if (url.pathname == "/") {
-    const html = Deno.readTextFileSync("../webbsidan/index.html");
-    return new Response(html, { headers: { "Content-Type": "text/plain" } });
-  }
-
-  if (url.pathname == "/index.css") {
-    const html = Deno.readTextFileSync("../webbsidan/index.css");
-    return new Response(html, { headers: { "Content-Type": "text/css" } });
-  }
-
-  if (url.pathname == "/index.js") {
-    const html = Deno.readTextFileSync("../webbsidan/index.js");
-    return new Response(html, {
-      headers: { "Content-Type": "text/javascript" },
-    });
-  } */
