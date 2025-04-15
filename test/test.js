@@ -81,3 +81,110 @@ function fulfillhandleDELETE(resource) {
     console.log("förfrågan 7: städer som uppfyller text och country");
   }
 }
+
+async function getResource8() {
+  const response = await fetch("http://localhost:8000/cities", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name: "Dresden", country: "Germany" }),
+  });
+  return await response.json();
+}
+
+async function driverfunction8() {
+  const resource = await getResource8();
+  console.log(`förfrågan 8: ${resource}`);
+}
+
+driverfunction8();
+
+async function getResource9() {
+  const response = await fetch("http://localhost:8000/cities", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name: "Dresden" }),
+  });
+  return await response.json();
+}
+
+async function driverfunction9() {
+  const resource = await getResource9();
+  console.log(`förfrågan 9: ${resource}`);
+}
+
+driverfunction9();
+
+async function getResource10() {
+  const response = await fetch("http://localhost:8000/cities", {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id: 56 }),
+  });
+  return await response.json();
+}
+
+async function driverfunction10() {
+  const resource = await getResource10();
+  console.log(`förfrågan 10: ${resource}`);
+}
+
+driverfunction10();
+
+async function getResource11() {
+  const response = await fetch("http://localhost:8000/cities", {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({}),
+  });
+  return await response.json();
+}
+
+async function driverfunction11() {
+  const resource = await getResource11();
+  console.log(`förfrågan 11: ${resource}`);
+}
+
+driverfunction11();
+
+async function getResource12() {
+  const response = await fetch("http://localhost:8000/messages", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ from: 2, to: 1, password: "pass" }),
+  });
+  return await response.json();
+}
+
+async function driverfunction12() {
+  const resource = await getResource12();
+  console.log(`förfrågan 12: ${resource}`);
+}
+
+driverfunction12();
+
+async function getResource13() {
+  const response = await fetch("http://localhost:8000/cities/search");
+  return await response.json();
+}
+
+async function driverfunction13() {
+  //KOLLA DENNA
+  const resource = await getResource13();
+  console.log(`förfrågan 13: ${resource}`);
+}
+
+driverfunction13();
+
+async function getResource14() {
+  const response = await fetch("http://localhost:8000/mordor", {
+    method: "DELETE",
+  });
+  return await response.json();
+}
+
+async function driverfunction14() {
+  const resource = await getResource14();
+  console.log(`förfrågan 14: ${resource}`);
+}
+
+driverfunction14();

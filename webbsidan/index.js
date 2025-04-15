@@ -66,7 +66,7 @@ button1.addEventListener("click", function () {
     .then(fulfillhandlePOST);
 
   function fulfillhandlePOST(resource) {
-    const city = resource;
+    const city = resource; //KOLLA DENNA blir fel med if satserna
 
     if (city.name == undefined && city.country == undefined) {
       alert("Kolla listan igen:) staden finns redan");
