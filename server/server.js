@@ -40,7 +40,44 @@ async function handler(request) {
         headers: headersCORS,
       });
     }
-    const route = new URLPattern({ pathname: "cities/:id" });
+
+    if (url.pathname == "/cities/search") {
+      if (!url.searchParams.has("text")) {
+        return new Response(
+          JSON.stringify("Sökparametern text finns ej med!"),
+          {
+            status: 400,
+            headers: headersCORS,
+          }
+        );
+      }
+
+      if (url.searchParams.has("text")) {
+        const textValue = url.searchParams.get("text");
+        let rightCities = [];
+        for (let city of cities) {
+          if (city.name.includes(textValue)) {
+            rightCities.push(city);
+
+            if (url.searchParams.has("country")) {
+              const countryValue = url.searchParams.get("country");
+              for (let i = 0; i < rightCities.length; i++) {
+                if (!rightCities[i].country.includes(countryValue)) {
+                  rightCities.splice(i, 1);
+                }
+              }
+            }
+          }
+        }
+
+        return new Response(JSON.stringify(rightCities), {
+          status: 200,
+          headers: headersCORS,
+        });
+      }
+    }
+
+    const route = new URLPattern({ pathname: "/cities/:id" });
     const match = route.exec(url);
 
     if (match) {
@@ -54,42 +91,11 @@ async function handler(request) {
           });
         }
       }
-    } else {
-      return new Response("Finns ingen stad med detta id", {
+
+      return new Response(JSON.stringify("Finns ingen stad med detta id"), {
         status: 404,
         headers: headersCORS,
       });
-    }
-
-    if (url.pathname == "cities/search") {
-      if (url.searchParams.has("text")) {
-        const textValue = url.searchParams.get("text");
-        let rightCities = [];
-        for (let city of cities) {
-          if (city.name.includes(textValue)) {
-            rightCities.push(city);
-          }
-        }
-
-        if (url.searchParams.has("country")) {
-          const countryValue = url.searchParams.get("country");
-          for (let i = 0; i < rightCities.length; i++) {
-            if (!rightCities[i].country.includes(countryValue)) {
-              rightCities.splice(i, 1);
-            }
-          }
-        }
-
-        return new Response(JSON.stringify(rightCities), {
-          status: 200,
-          headers: headersCORS,
-        });
-      } else {
-        return new Response("Sökparametern text finns ej med!", {
-          status: 400,
-          headers: headersCORS,
-        });
-      }
     }
   }
 
@@ -100,7 +106,7 @@ async function handler(request) {
       const inputCountry = body.country;
 
       if (!inputName || !inputCountry) {
-        return new Response("namn eller country saknas", {
+        return new Response(JSON.stringify("namn eller country saknas"), {
           status: 400,
           headers: headersCORS,
         });
@@ -108,7 +114,7 @@ async function handler(request) {
 
       for (let city of cities) {
         if (city.name == inputName) {
-          return new Response("Staden finns redan", {
+          return new Response(JSON.stringify("Staden finns redan"), {
             status: 409,
             headers: headersCORS,
           });
@@ -143,7 +149,7 @@ async function handler(request) {
       console.log("förfråganserve: " + city);
 
       if (!city) {
-        return new Response("Id saknas!", {
+        return new Response(JSON.stringify("Id saknas!"), {
           status: 400,
           headers: headersCORS,
         });
@@ -155,21 +161,21 @@ async function handler(request) {
           console.log("server: " + cities[i].id);
           cities.splice(i, 1);
 
-          return new Response("Delete ok", {
+          return new Response(JSON.stringify("Delete ok"), {
             status: 200,
             headers: headersCORS,
           });
         }
       }
 
-      return new Response("Finns ingen stad med id", {
+      return new Response(JSON.stringify("Finns ingen stad med id"), {
         status: 404,
         headers: headersCORS,
       });
     }
   }
 
-  return new Response("Bad request", {
+  return new Response(JSON.stringify("Bad request"), {
     status: 400,
     headers: headersCORS,
   });
