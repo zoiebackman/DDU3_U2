@@ -44,7 +44,7 @@ async function handler(request) {
     if (url.pathname == "/cities/search") {
       if (!url.searchParams.has("text")) {
         return new Response(
-          JSON.stringify("Sökparametern text finns ej med!"),
+          JSON.stringify("Sökparametern text finns ej med!, status: 400"),
           {
             status: 400,
             headers: headersCORS,
@@ -92,10 +92,13 @@ async function handler(request) {
         }
       }
 
-      return new Response(JSON.stringify("Finns ingen stad med detta id"), {
-        status: 404,
-        headers: headersCORS,
-      });
+      return new Response(
+        JSON.stringify("Finns ingen stad med detta id, status: 404"),
+        {
+          status: 404,
+          headers: headersCORS,
+        }
+      );
     }
   }
 
@@ -106,18 +109,24 @@ async function handler(request) {
       const inputCountry = body.country;
 
       if (!inputName || !inputCountry) {
-        return new Response(JSON.stringify("namn eller country saknas"), {
-          status: 400,
-          headers: headersCORS,
-        });
+        return new Response(
+          JSON.stringify("namn eller country saknas, status: 400"),
+          {
+            status: 400,
+            headers: headersCORS,
+          }
+        );
       }
 
       for (let city of cities) {
         if (city.name == inputName) {
-          return new Response(JSON.stringify("Staden finns redan"), {
-            status: 409,
-            headers: headersCORS,
-          });
+          return new Response(
+            JSON.stringify("Staden finns redan, status: 409"),
+            {
+              status: 409,
+              headers: headersCORS,
+            }
+          );
         }
       }
       let counter = 0;
@@ -149,7 +158,7 @@ async function handler(request) {
       console.log("förfråganserve: " + city);
 
       if (!city) {
-        return new Response(JSON.stringify("Id saknas!"), {
+        return new Response(JSON.stringify("Id saknas!, status: 400"), {
           status: 400,
           headers: headersCORS,
         });
@@ -168,14 +177,17 @@ async function handler(request) {
         }
       }
 
-      return new Response(JSON.stringify("Finns ingen stad med id"), {
-        status: 404,
-        headers: headersCORS,
-      });
+      return new Response(
+        JSON.stringify("Finns ingen stad med id, status: 404"),
+        {
+          status: 404,
+          headers: headersCORS,
+        }
+      );
     }
   }
 
-  return new Response(JSON.stringify("Bad request"), {
+  return new Response(JSON.stringify("Bad request, status: 400"), {
     status: 400,
     headers: headersCORS,
   });
