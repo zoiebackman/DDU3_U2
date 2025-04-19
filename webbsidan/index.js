@@ -50,9 +50,9 @@ button1.addEventListener("click", function () {
   const inputName = document.getElementById("inputName");
   const inputCountry = document.getElementById("inputCountry");
 
-  if (inputName.value == "" || inputCountry.value == "") {
-    alert("Stad eller Land är inte ifyllt");
-  }
+  /*  if (inputName.value == "" || inputCountry.value == "") {
+    alert("Fyll i båda fälten");
+  } */
 
   fetch("http://localhost:8000/cities", {
     method: "POST",
@@ -68,10 +68,9 @@ button1.addEventListener("click", function () {
   function fulfillhandlePOST(resource) {
     const city = resource; //KOLLA DENNA blir fel med if satserna
 
-    if (city.name == undefined && city.country == undefined) {
+    /* if (city.name == undefined && city.country == undefined) {
       alert("Kolla listan igen:) staden finns redan");
-    }
-    console.log("fulfillhandlePOST" + city.name + city.country);
+    } */
 
     if (city.name != undefined && city.country != undefined) {
       let citys = document.createElement("div");
@@ -103,6 +102,8 @@ button1.addEventListener("click", function () {
 
       inputName.value = "";
       inputCountry.value = "";
+    } else {
+      alert("Stad och land inte ifyllt, eller så finns staden redan i listan");
     }
   }
 });

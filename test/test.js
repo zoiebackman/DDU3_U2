@@ -168,7 +168,7 @@ async function getResource13() {
 }
 
 async function driverfunction13() {
-  //KOLLA DENNA
+  //KOLLA DENNA tror den  ska vara rätt får ändå felsvar 400
   const resource = await getResource13();
   console.log(`förfrågan 13: ${resource}`);
 }
