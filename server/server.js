@@ -42,7 +42,8 @@ async function handler(request) {
     }
 
     if (url.pathname == "/cities/search") {
-      if (!url.searchParams.has("text")) {
+      const textValue = url.searchParams.get("text");
+      if (!textValue) {
         return new Response(
           JSON.stringify("Sökparametern text finns ej med!, status: 400"),
           {
@@ -53,8 +54,8 @@ async function handler(request) {
       }
 
       if (url.searchParams.has("text")) {
-        const textValue = url.searchParams.get("text");
         let rightCities = [];
+
         for (let city of cities) {
           if (city.name.includes(textValue)) {
             rightCities.push(city);
@@ -105,6 +106,7 @@ async function handler(request) {
   if (request.method == "POST") {
     if (url.pathname == "/cities") {
       const body = await request.json();
+
       const inputName = body.name;
       const inputCountry = body.country;
 
@@ -140,9 +142,7 @@ async function handler(request) {
         name: inputName,
         country: inputCountry,
       };
-      console.log(`Detta är POST/cities: ${newCity.id}`);
       cities.push(newCity);
-      console.log("UPPDATERAD ARRAY: " + cities);
 
       return new Response(JSON.stringify(newCity), {
         status: 200,
@@ -155,7 +155,6 @@ async function handler(request) {
     if (url.pathname == "/cities") {
       const body = await request.json();
       const city = body.id;
-      console.log("förfråganserve: " + city);
 
       if (!city) {
         return new Response(JSON.stringify("Id saknas!, status: 400"), {
@@ -164,10 +163,7 @@ async function handler(request) {
         });
       }
       for (let i = 0; i < cities.length; i++) {
-        console.log(cities[i].id);
-
         if (cities[i].id == city) {
-          console.log("server: " + cities[i].id);
           cities.splice(i, 1);
 
           return new Response(JSON.stringify("Delete ok"), {

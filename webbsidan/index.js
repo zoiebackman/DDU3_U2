@@ -16,7 +16,6 @@ function fulfillhandleGET(resource) {
   const cities = resource;
 
   for (let city of cities) {
-    console.log(city);
     let citys = document.createElement("div");
     let cityText = document.createElement("p");
     let cityDelete = document.createElement("button");
@@ -33,8 +32,6 @@ function fulfillhandleGET(resource) {
     citys.appendChild(cityDelete);
 
     cityDelete.addEventListener("click", function () {
-      console.log(city.id);
-
       fetch("http://localhost:8000/cities", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
@@ -50,10 +47,6 @@ button1.addEventListener("click", function () {
   const inputName = document.getElementById("inputName");
   const inputCountry = document.getElementById("inputCountry");
 
-  /*  if (inputName.value == "" || inputCountry.value == "") {
-    alert("Fyll i båda fälten");
-  } */
-
   fetch("http://localhost:8000/cities", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -62,85 +55,101 @@ button1.addEventListener("click", function () {
       country: inputCountry.value,
     }),
   })
-    .then((x) => x.json())
+    .then((response) => {
+      if (response.status == 400) {
+        alert("namn eller country saknas");
+        inputName.value = "";
+        inputCountry.value = "";
+        return;
+      }
+      if (response.status == 409) {
+        alert("staden finns redan");
+        inputName.value = "";
+        inputCountry.value = "";
+        return;
+      }
+      return response.json();
+    })
     .then(fulfillhandlePOST);
 
   function fulfillhandlePOST(resource) {
-    const city = resource; //KOLLA DENNA blir fel med if satserna
+    const city = resource;
 
-    /* if (city.name == undefined && city.country == undefined) {
-      alert("Kolla listan igen:) staden finns redan");
-    } */
+    let citys = document.createElement("div");
+    let cityText = document.createElement("p");
+    let cityDelete = document.createElement("button");
 
-    if (city.name != undefined && city.country != undefined) {
-      let citys = document.createElement("div");
-      let cityText = document.createElement("p");
-      let cityDelete = document.createElement("button");
+    citys.classList.add("city");
+    cityText.classList.add("cityText");
+    cityDelete.classList.add("cityDelete");
 
-      citys.classList.add("city");
-      cityText.classList.add("cityText");
-      cityDelete.classList.add("cityDelete");
+    cityText.textContent = `${city.name},  ${city.country}`;
+    cityDelete.textContent = "Delete";
 
-      cityText.textContent = `${city.name},  ${city.country}`;
-      cityDelete.textContent = "Delete";
+    document.getElementById("cities").appendChild(citys);
+    citys.appendChild(cityText);
+    citys.appendChild(cityDelete);
 
-      document.getElementById("cities").appendChild(citys);
-      citys.appendChild(cityText);
-      citys.appendChild(cityDelete);
+    cityDelete.addEventListener("click", function () {
+      fetch("http://localhost:8000/cities", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: city.id }),
+      })
+        .then((x) => x.json())
+        .then(() => citys.remove());
+    });
 
-      cityDelete.addEventListener("click", function () {
-        console.log(city.id);
-
-        fetch("http://localhost:8000/cities", {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id: city.id }),
-        })
-          .then((x) => x.json())
-          .then(citys.remove());
-      });
-
-      inputName.value = "";
-      inputCountry.value = "";
-    } else {
-      alert("Stad och land inte ifyllt, eller så finns staden redan i listan");
-    }
+    inputName.value = "";
+    inputCountry.value = "";
   }
 });
 
 button2.addEventListener("click", function () {
-  const inputText = document.getElementById("inputText").value;
-  const inputCountry2 = document.getElementById("inputCountry2").value;
+  const inputText = document.getElementById("inputText");
+  const inputCountry2 = document.getElementById("inputCountry2");
 
   fetch(
-    `http://localhost:8000/cities/search?text=${inputText}&country=${inputCountry2}`
+    `http://localhost:8000/cities/search?text=${inputText.value}&country=${inputCountry2.value}`
   )
-    .then((x) => x.json())
+    .then((response) => {
+      if (response.status == 400) {
+        alert("Sökparametern text finns ej med!");
+        return;
+      }
+      return response.json();
+    })
     .then(fulfillhandleMatch);
 
   function fulfillhandleMatch(resource) {
     const cityMatchArray = resource;
-    console.log(cityMatchArray);
 
-    if (inputText == "") {
-      alert("Du måste skriva något på text:)");
+    document.getElementById("cities2").innerHTML = ``;
+
+    if (cityMatchArray.length == 0) {
+      let div = document.createElement("div");
+      let p = document.createElement("p");
+
+      div.classList.add("city2");
+      p.classList.add("cityText");
+      p.textContent = "No cities found";
+
+      document.getElementById("cities2").appendChild(div);
+      div.appendChild(p);
+    }
+    for (let city of cityMatchArray) {
+      let div = document.createElement("div");
+      let p = document.createElement("p");
+
+      div.classList.add("city2");
+      p.classList.add("cityText");
+      p.textContent = `${city.name}, ${city.country}`;
+
+      document.getElementById("cities2").appendChild(div);
+      div.appendChild(p);
     }
 
-    if (inputText != "") {
-      document.getElementById("cities2").innerHTML = ``;
-      for (let city of cityMatchArray) {
-        let div = document.createElement("div");
-        let p = document.createElement("p");
-
-        div.classList.add("city2");
-        p.classList.add("cityText");
-        p.textContent = `${city.name}, ${city.country}`;
-
-        document.getElementById("cities2").appendChild(div);
-        div.appendChild(p);
-      }
-    }
-    inputText = "";
-    inputCountry2 = "";
+    inputText.value = "";
+    inputCountry2.value = "";
   }
 });
