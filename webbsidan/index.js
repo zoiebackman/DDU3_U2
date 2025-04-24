@@ -47,6 +47,12 @@ button1.addEventListener("click", function () {
   const inputName = document.getElementById("inputName");
   const inputCountry = document.getElementById("inputCountry");
 
+  if (inputName.value == "" || inputCountry.value == "") {
+    alert("namn eller country saknas");
+    inputName.value = "";
+    inputCountry.value = "";
+  }
+
   fetch("http://localhost:8000/cities", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -56,12 +62,6 @@ button1.addEventListener("click", function () {
     }),
   })
     .then((response) => {
-      if (response.status == 400) {
-        alert("namn eller country saknas");
-        inputName.value = "";
-        inputCountry.value = "";
-        return;
-      }
       if (response.status == 409) {
         alert("staden finns redan");
         inputName.value = "";
