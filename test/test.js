@@ -125,7 +125,7 @@ function f7() {
   function fulfillhandleSearch2(resource) {
     const rightCities = resource;
     console.log("förfrågan 7: städer som uppfyller text och country");
-    fel();
+    felSvar();
   }
 }
 
@@ -200,7 +200,7 @@ async function getResource14() {
   }
 }
 
-async function fel() {
+async function felSvar() {
   await getResource8();
   await getResource9();
   await getResource10();

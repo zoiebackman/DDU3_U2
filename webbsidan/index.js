@@ -6,7 +6,7 @@ const requestGET = new Request("http://localhost:8000/cities");
 fetch(requestGET)
   .then((x) => {
     if (!x.ok) {
-      console.log("FEl");
+      alert("array med laddar ej");
     }
     return x.json();
   })
