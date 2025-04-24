@@ -11,7 +11,7 @@ body {
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-  background-color: aliceblue;
+  background-color: rgb(255, 255, 255);
   margin: 5px 0;
 }
 
@@ -56,7 +56,7 @@ button {
 }
 
 #ruta1 {
-  background-color: skyblue;
+  background-color: rgb(150, 205, 250);
   margin: 10px;
   height: 90%;
   width: 25%;
@@ -76,7 +76,7 @@ button {
 }
 
 .rutor {
-  background-color: black;
+  background-color: rgb(197, 237, 253);
   border-radius: 2px;
   margin: 10px;
   width: 25%;
@@ -90,7 +90,7 @@ button {
 .input {
   height: 110px;
   width: 250px;
-  background-color: skyblue;
+  background-color: rgb(150, 205, 250);
   margin: 20px 0px 15px;
   border-radius: 2px;
 }
@@ -107,7 +107,7 @@ button {
 
 .inputText {
   border: none;
-  background-color: skyblue;
+  background-color: rgb(150, 205, 250);
   width: 150px;
   height: 20px;
   font-family: "Times New Roman", Times, serif;
@@ -115,7 +115,7 @@ button {
 #cities {
   margin: 15px 0px 0px;
   width: 250px;
-  background-color: skyblue;
+  background-color: rgb(150, 205, 250);
   max-height: 550px;
   overflow-y: auto;
   scrollbar-width: none;
@@ -126,7 +126,7 @@ button {
   margin: 15px 0px 0px;
   height: 290px;
   width: 250px;
-  background-color: skyblue;
+  background-color: rgb(150, 205, 250);
   border-radius: 2px;
   overflow-y: auto;
   scrollbar-width: none;
@@ -145,7 +145,7 @@ button {
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-  background-color: aliceblue;
+  background-color: rgb(255, 255, 255);
   margin: 10px 0;
   margin-left: 11px;
 }
